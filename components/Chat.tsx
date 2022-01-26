@@ -22,10 +22,10 @@ export const Chat = () => {
   const channelId = useSelector(selectChannelId)
   const serverId = useSelector(selectServerId)
   const [user] = useAuthState(auth)
-  const [channelDoc] = useDocument(
-    channelId && doc(doc(db, 'servers', serverId), 'channels', channelId)
-  )
   const channelRef = doc(doc(db, 'servers', serverId), 'channels', channelId)
+  const [channelDoc] = useDocument(
+    channelId && channelRef
+  )
 
   const channelData = channelDoc?.data()
   const messageRef = useRef<HTMLInputElement>(null)

@@ -46,7 +46,7 @@ export const Channels = () => {
       </div>
       <div className="px-2">
         {channels?.docs?.map((doc) => (
-          <Channel channel={doc} />
+          <Channel channel={doc} key={doc.id} />
         ))}
       </div>
     </div>
