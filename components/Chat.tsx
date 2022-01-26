@@ -13,7 +13,7 @@ import { Messages } from './Messages'
 export const Chat = () => {
   return (
     <div className="relative h-screen  w-2/3 bg-discord-primary">
-      <div className="relative flex w-[100%] h-12 border border-discord-primary border-r-0 shadow-lg">
+      <div className="relative flex h-12 w-[100%] border border-r-0 border-discord-primary shadow-lg">
         <div className="flex items-center space-x-2 p-2">
           <HashtagIcon className="w-7 text-gray-500" />
           <p className="my-1 cursor-default border-r border-gray-500 pr-5 font-bold text-discord-white">
@@ -33,23 +33,23 @@ export const Chat = () => {
           <UserGroupIcon className="w-6 cursor-pointer text-gray-300 hover:text-gray-100" />
         </div>
       </div>
-      {/* messages */}
-      <Messages/>
-
-      {/* input section */}
+      <Messages />
       <div className="absolute bottom-6 left-4 flex w-[90%] rounded-lg bg-gray-500 px-2 py-1">
-        <PlusCircleIcon className="w-8 text-gray-400 hover:text-white cursor-pointer" />
+        <PlusCircleIcon className="w-8 cursor-pointer text-gray-400 hover:text-white" />
         <input
           type="text"
           className="ml-3 h-8 w-[75%] rounded-lg border-none bg-transparent text-white caret-white outline-none"
           placeholder={`Message #channel name`}
         />
 
-        <div className="hidden sm:flex items-center space-x-2">
-          <GiftIcon className="w-6 text-gray-400 hover:text-white cursor-pointer" />
-          <Gif className="text-gray-400 hover:text-white cursor-pointer" fontSize='large' />
-          <StickyNote2Rounded className="rotate-180 text-gray-400 hover:text-white cursor-pointer" />
-          <EmojiHappyIcon className="w-6 text-gray-400 hover:text-white cursor-pointer" />
+        <div className="hidden items-center space-x-2 sm:flex">
+          <GiftIcon className="w-6 cursor-pointer text-gray-400 hover:text-white" />
+          <Gif
+            className="cursor-pointer text-gray-400 hover:text-white"
+            fontSize="large"
+          />
+          <StickyNote2Rounded className="rotate-180 cursor-pointer text-gray-400 hover:text-white" />
+          <EmojiHappyIcon className="w-6 cursor-pointer text-gray-400 hover:text-white" />
         </div>
       </div>
     </div>

@@ -19,6 +19,9 @@ module.exports = {
           selectedOption: "rgba(79,84,92,0.32)",
           primary: "#36393f"
         }
+      },
+      animation: {
+        'loading-spin': 'spin 2s ease-in-out infinite'
       }
     },
   },
