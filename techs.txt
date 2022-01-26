@@ -2,4 +2,4 @@ nextjs
 redux
 firebase
 tailwindcss
-
+google authentication
