@@ -6,7 +6,7 @@ import { Servers } from '../components/Servers'
 
 export default function Home() {
   return (
-    <div className="flex h-screen w-screen bg-discord-primary overflow-hidden">
+    <div className="flex h-screen w-screen overflow-hidden bg-discord-primary">
       {/* SEO */}
       <Head>
         <title>Discord</title>
@@ -93,7 +93,7 @@ export default function Home() {
         <Servers />
         <Channels />
         <Chat />
-        <Members/>
+        <Members />
       </main>
     </div>
   )

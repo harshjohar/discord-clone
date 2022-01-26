@@ -1,4 +1,5 @@
 import { signInWithPopup } from 'firebase/auth'
+import Head from 'next/head'
 import React from 'react'
 import { auth, provider } from '../server/firebase'
 
@@ -8,6 +9,10 @@ export const Login = () => {
   }
   return (
       <div className="grid h-screen w-screen place-items-center bg-discord-primary">
+        <Head>
+        <title>Login</title>
+        <link rel="icon" href="icons/favicon.ico" />
+        </Head>
         <div className="grid h-96 w-80 place-items-center rounded-md bg-discord-selectedOption shadow-lg">
           <img src="/logos/Discord-Logo-White.png" alt="" className="h-32" />
           <button

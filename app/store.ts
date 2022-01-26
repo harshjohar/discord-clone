@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
-// ...
+import serverReducer from "../features/serverSlice"
 
 export const store = configureStore({
   reducer: {
-    
+    server: serverReducer
   },
 })
 

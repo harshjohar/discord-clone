@@ -5,7 +5,9 @@ import { auth, db } from '../server/firebase'
 import { Login } from '../components/Login'
 import { Loading } from '../components/Loading'
 import { useEffect } from 'react'
-import { doc, setDoc } from 'firebase/firestore'
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore'
+import { Provider } from 'react-redux'
+import { store } from '../app/store'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [user, loading] = useAuthState(auth)
@@ -18,6 +20,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           email: user.email,
           photoURL: user.photoURL,
           displayName: user.displayName,
+          lastSeen: serverTimestamp(),
         },
         {
           merge: true,
@@ -33,7 +36,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   if (!user) {
     return <Login />
   }
-  return <Component {...pageProps} />
+  return (
+    <Provider store={store}>
+      <Component {...pageProps} />
+    </Provider>
+  )
 }
 
 export default MyApp
