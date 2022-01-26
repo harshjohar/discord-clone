@@ -6,7 +6,7 @@ import { Servers } from '../components/Servers'
 
 export default function Home() {
   return (
-    <div className="flex h-screen w-screen bg-discord-primary">
+    <div className="flex h-screen w-screen bg-discord-primary overflow-hidden">
       {/* SEO */}
       <Head>
         <title>Discord</title>

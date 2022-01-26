@@ -19,7 +19,20 @@ export const Servers = () => {
       <hr className="mx-4 border-discord-primary" />
       {/* servers */}
       <div className="flex flex-col items-center justify-center space-y-2 p-2">
-        {/* servers here */}
+        {/* servers here , className="serverIcon"*/}
+        <img src="/dp.png" alt="dp" className='serverIcon'/>
+        <img src="/dp.png" alt="dp" className='serverIcon'/>
+        <img src="/dp.png" alt="dp" className='serverIcon'/>
+        <img src="/dp.png" alt="dp" className='serverIcon'/>
+        <img src="/dp.png" alt="dp" className='serverIcon'/>
+        <img src="/dp.png" alt="dp" className='serverIcon'/>
+        <img src="/dp.png" alt="dp" className='serverIcon'/>
+        <img src="/dp.png" alt="dp" className='serverIcon'/>
+        <img src="/dp.png" alt="dp" className='serverIcon'/>
+        <img src="/dp.png" alt="dp" className='serverIcon'/>
+        <img src="/dp.png" alt="dp" className='serverIcon'/>
+        <img src="/dp.png" alt="dp" className='serverIcon'/>
+        <img src="/dp.png" alt="dp" className='serverIcon'/>
       </div>
       {/* add server */}
       <div className="flex items-center justify-center p-2">

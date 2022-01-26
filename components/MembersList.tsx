@@ -5,8 +5,28 @@ import { Member } from './Member'
 
 export const MembersList = () => {
   return (
-    <div className="flex flex-col space-y-3 overflow-y-scroll p-2 scrollbar-hide">
+    <div className="flex flex-col space-y-3 overflow-y-scroll p-2 scrollbar-hide mt-3">
       <h2 className="text-gray-500">MEMBERS - 69</h2>
+      <Member displayName="Pikachu" photoURL="/dp.png" />
+      <Member displayName="Pikachu" photoURL="/dp.png" />
+      <Member displayName="Pikachu" photoURL="/dp.png" />
+      <Member displayName="Pikachu" photoURL="/dp.png" />
+      <Member displayName="Pikachu" photoURL="/dp.png" />
+      <Member displayName="Pikachu" photoURL="/dp.png" />
+      <Member displayName="Pikachu" photoURL="/dp.png" />
+      <Member displayName="Pikachu" photoURL="/dp.png" />
+      <Member displayName="Pikachu" photoURL="/dp.png" />
+      <Member displayName="Pikachu" photoURL="/dp.png" />
+      <Member displayName="Pikachu" photoURL="/dp.png" />
+      <Member displayName="Pikachu" photoURL="/dp.png" />
+      <Member displayName="Pikachu" photoURL="/dp.png" />
+      <Member displayName="Pikachu" photoURL="/dp.png" />
+      <Member displayName="Pikachu" photoURL="/dp.png" />
+      <Member displayName="Pikachu" photoURL="/dp.png" />
+      <Member displayName="Pikachu" photoURL="/dp.png" />
+      <Member displayName="Pikachu" photoURL="/dp.png" />
+      <Member displayName="Pikachu" photoURL="/dp.png" />
+      <Member displayName="Pikachu" photoURL="/dp.png" />
       <Member displayName="Pikachu" photoURL="/dp.png" />
       <Member displayName="Pikachu" photoURL="/dp.png" />
       <Member displayName="Pikachu" photoURL="/dp.png" />
