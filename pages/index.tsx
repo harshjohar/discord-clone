@@ -1,4 +1,7 @@
 import Head from 'next/head'
+import { Channels } from '../components/Channels'
+import { Chat } from '../components/Chat'
+import { Members } from '../components/Members'
 import { Servers } from '../components/Servers'
 
 export default function Home() {
@@ -86,8 +89,11 @@ export default function Home() {
         <meta name="theme-color" content="#ffffff"></meta>
       </Head>
 
-      <main className="">
+      <main className="flex w-[100%]">
         <Servers />
+        <Channels />
+        <Chat />
+        <Members/>
       </main>
     </div>
   )
