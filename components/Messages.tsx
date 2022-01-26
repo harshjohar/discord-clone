@@ -23,7 +23,7 @@ export const Messages = (props: channelProp) => {
     endRef?.current?.scrollIntoView()
   }, [messages])
   return (
-    <div className="h-[80%] overflow-y-scroll scroll-smooth scrollbar-hide">
+    <div className="h-[80%] overflow-y-scroll scrollbar-hide">
       {messages?.docs?.map((doc) => {
         const { message, timestamp, displayName, photoUrl } = doc.data()
         return (
