@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import {
   HashtagIcon,
   BellIcon,
@@ -13,15 +13,42 @@ import { Messages } from './Messages'
 import { useSelector } from 'react-redux'
 import { selectChannelId } from '../features/channelSlice'
 import { useDocument } from 'react-firebase-hooks/firestore'
-import { doc } from 'firebase/firestore'
-import { db } from '../server/firebase'
+import { addDoc, collection, doc, serverTimestamp } from 'firebase/firestore'
+import { auth, db } from '../server/firebase'
 import { selectServerId } from '../features/serverSlice'
+import { useAuthState } from 'react-firebase-hooks/auth'
+
 export const Chat = () => {
   const channelId = useSelector(selectChannelId)
-  const serverId = useSelector(selectServerId);
-  const [channelDoc] = useDocument(channelId && doc(doc(db, 'servers', serverId), 'channels', channelId))
+  const serverId = useSelector(selectServerId)
+  const [user] = useAuthState(auth)
+  const [channelDoc] = useDocument(
+    channelId && doc(doc(db, 'servers', serverId), 'channels', channelId)
+  )
+  const channelRef = doc(doc(db, 'servers', serverId), 'channels', channelId)
 
   const channelData = channelDoc?.data()
+  const messageRef = useRef<HTMLInputElement>(null)
+
+  const [message, setMessage] = useState('')
+
+  const sendMessage = (e: any) => {
+    e.preventDefault()
+
+    addDoc(collection(channelRef, 'messages'), {
+      message: message,
+      timestamp: serverTimestamp(),
+      displayName: user?.displayName,
+      photoUrl: user?.photoURL,
+    })
+
+    messageRef?.current?.scrollIntoView({
+      behavior: 'smooth',
+    })
+
+    setMessage('')
+  }
+
   return (
     <div className="relative h-screen  w-2/3 bg-discord-primary">
       <div className="relative flex h-12 w-[100%] border border-r-0 border-discord-primary shadow-lg">
@@ -45,15 +72,23 @@ export const Chat = () => {
         </div>
       </div>
 
-      <Messages />
-      
+      <Messages channelDoc={channelRef} />
+
       <div className="absolute bottom-6 left-4 flex w-[90%] rounded-lg bg-gray-500 px-2 py-1">
         <PlusCircleIcon className="w-8 cursor-pointer text-gray-400 hover:text-white" />
-        <input
-          type="text"
-          className="ml-3 h-8 w-[75%] rounded-lg border-none bg-transparent text-white caret-white outline-none"
-          placeholder={`Message #channel name`}
-        />
+        <form className="w-full">
+          <input
+            type="text"
+            className="ml-3 h-8 w-[75%] rounded-lg border-none bg-transparent text-white caret-white outline-none"
+            placeholder={`Message #${channelData?.name}`}
+            ref={messageRef}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+          <button onClick={sendMessage} type="submit" className="hidden">
+            Send
+          </button>
+        </form>
 
         <div className="hidden items-center space-x-2 sm:flex">
           <GiftIcon className="w-6 cursor-pointer text-gray-400 hover:text-white" />

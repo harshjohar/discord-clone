@@ -1,36 +1,44 @@
-import React, { useRef, useEffect } from 'react';
-import { Message } from './Message';
+import {
+  collection,
+  DocumentData,
+  DocumentReference,
+  orderBy,
+  query,
+} from 'firebase/firestore'
+import React, { useRef, useEffect } from 'react'
+import { useCollection } from 'react-firebase-hooks/firestore'
+import { Message } from './Message'
 
-export const Messages = () => {
-    const endRef=useRef<HTMLDivElement>(null);
+interface channelProp {
+  channelDoc: DocumentReference<DocumentData>
+}
 
-    useEffect(()=> {
-        endRef?.current?.scrollIntoView();
-    }, [])
-  return <div className='h-[80%] overflow-y-scroll scrollbar-hide scroll-smooth'>
-      <Message message='hi there' timestamp={22} photoUrl='/dp.png' displayName='Pikachu' />
-      <Message message='hellooo there' timestamp={22} photoUrl='/dp.png' displayName='Pikachu' />
-      <Message message='heyy' timestamp={22} photoUrl='/dp.png' displayName='Pikachu' />
-      <Message message='hihihi' timestamp={22} photoUrl='/dp.png' displayName='Pikachu' />
-      <Message message='hihihi' timestamp={22} photoUrl='/dp.png' displayName='Pikachu' />
-      <Message message='hihihi' timestamp={22} photoUrl='/dp.png' displayName='Pikachu' />
-      <Message message='hihihi' timestamp={22} photoUrl='/dp.png' displayName='Pikachu' />
-      <Message message='hihihi' timestamp={22} photoUrl='/dp.png' displayName='Pikachu' />
-      <Message message='hihihi' timestamp={22} photoUrl='/dp.png' displayName='Pikachu' />
-      <Message message='hihihi' timestamp={22} photoUrl='/dp.png' displayName='Pikachu' />
-      <Message message='hihihi' timestamp={22} photoUrl='/dp.png' displayName='Pikachu' />
-      <Message message='hihihi' timestamp={22} photoUrl='/dp.png' displayName='Pikachu' />
-      <Message message='hihihi' timestamp={22} photoUrl='/dp.png' displayName='Pikachu' />
-      <Message message='hihihi' timestamp={22} photoUrl='/dp.png' displayName='Pikachu' />
-      <Message message='hihihi' timestamp={22} photoUrl='/dp.png' displayName='Pikachu' />
-      <Message message='hihihi' timestamp={22} photoUrl='/dp.png' displayName='Pikachu' />
-      <Message message='heehee' timestamp={22} photoUrl='/dp.png' displayName='Pikachu' />
-      <Message message='heehee' timestamp={22} photoUrl='/dp.png' displayName='Pikachu' />
-      <Message message='heehee' timestamp={22} photoUrl='/dp.png' displayName='Pikachu' />
-      <Message message='heehee' timestamp={22} photoUrl='/dp.png' displayName='Pikachu' />
+export const Messages = (props: channelProp) => {
+  const endRef = useRef<HTMLDivElement>(null)
 
+  const [messages] = useCollection(
+    query(collection(props.channelDoc, 'messages'), orderBy('timestamp', 'asc'))
+  )
+  useEffect(() => {
+    endRef?.current?.scrollIntoView()
+  }, [messages])
+  return (
+    <div className="h-[80%] overflow-y-scroll scroll-smooth scrollbar-hide">
+      {messages?.docs?.map((doc) => {
+        const { message, timestamp, displayName, photoUrl } = doc.data()
+        return (
+          <Message
+            key={doc.id}
+            message={message}
+            timestamp={timestamp}
+            displayName={displayName}
+            photoUrl={photoUrl}
+          />
+        )
+      })}
 
       {/* scroll into view */}
       <div ref={endRef} />
-  </div>;
-};
+    </div>
+  )
+}

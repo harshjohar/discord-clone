@@ -2,7 +2,7 @@ import React from 'react'
 
 interface message {
   message: string
-  timestamp: number
+  timestamp: any
   displayName: string
   photoUrl: string
 }
@@ -17,7 +17,7 @@ export const Message = (props: message) => {
       <div className="ml-3">
         <p className="text-md cursor-pointer font-semibold text-white">
           {props.displayName}
-          <span className='text-xs text-gray-400 font-normal hover:no-underline cursor-default ml-4'>{props.timestamp}</span>
+          <span className='text-xs text-gray-400 font-normal hover:no-underline cursor-default ml-4'>{props.timestamp && new Date(props.timestamp?.toDate()).toLocaleString()}</span>
         </p>
 
         <p className='text-white'>
