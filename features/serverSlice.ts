@@ -15,11 +15,14 @@ export const serverSlice = createSlice({
   reducers: {
     enterServer: (state, actions:PayloadAction<string>) => {
       state.serverId = actions.payload
+    },
+    exitServer: (state) => {
+      state.serverId = null
     }
   },
 })
 
-export const { enterServer } = serverSlice.actions
+export const { enterServer, exitServer } = serverSlice.actions
 
 export const selectServerId = (state: RootState) => state.server.serverId
 

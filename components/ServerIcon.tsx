@@ -25,10 +25,10 @@ export const ServerIcon = (props: serverProp) => {
         <img
           src={serverInfo.photo}
           alt=""
-          className={`serverIcon ${props.doc.id === currServer ? '' : ''}`}
+          className={`serverIcon ${(props.doc.id === currServer) ? 'rounded-xl' : ''}`}
         />
       ) : (
-        <Avatar className="serverIcon">{serverInfo.name[0]}</Avatar>
+        <Avatar className={`serverIcon ${(props.doc.id === currServer) ? 'rounded-xl' : ''}`}>{serverInfo.name[0]}</Avatar>
       )}
     </div>
   )
