@@ -7,8 +7,6 @@ interface ChannelDetails {
   channel: QueryDocumentSnapshot<DocumentData>
 }
 
-// compare channel id with redux and add active addributes accordingly
-
 export const Channel = (props: ChannelDetails) => {
   const dispatch = useDispatch()
   const currChannel = useSelector(selectChannelId)

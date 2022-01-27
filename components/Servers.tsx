@@ -8,6 +8,8 @@ import { useCollection } from 'react-firebase-hooks/firestore'
 import { ServerIcon } from './ServerIcon'
 import { useDispatch } from 'react-redux'
 import { exitServer } from '../features/serverSlice'
+import ExploreIcon from '@mui/icons-material/Explore';
+import { useRouter } from 'next/router'
 
 export const Servers = () => {
   const logout = () => {
@@ -30,6 +32,12 @@ export const Servers = () => {
         })
       })
     }
+  }
+
+  const router = useRouter();
+
+  const joinServer = () => {
+    router.push('/explore')
   }
 
   const [servers] = useCollection(
@@ -68,6 +76,11 @@ export const Servers = () => {
       <div className="flex items-center justify-center p-2" onClick={addServer}>
         <div className="serverIcon flex items-center justify-center bg-discord-primary text-[25px] text-discord-green hover:bg-discord-green hover:text-discord-primary">
           <PlusIcon className="w-5" />
+        </div>
+      </div>
+      <div className="flex items-center justify-center p-2" onClick={joinServer}>
+        <div className="serverIcon flex items-center justify-center bg-discord-primary text-[25px] text-discord-green hover:bg-discord-green hover:text-discord-primary">
+          <ExploreIcon/>
         </div>
       </div>
 

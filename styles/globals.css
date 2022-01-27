@@ -3,7 +3,11 @@
 @import 'tailwindcss/utilities';
 
 @layer components {
-    .serverIcon {
-        @apply h-12 w-12 rounded-full hover:rounded-xl cursor-pointer;
-    }
+  .serverIcon {
+    @apply h-12 w-12 cursor-pointer rounded-full hover:rounded-xl;
+  }
+
+  .icon {
+    @apply cursor-pointer rounded-full p-[0.1rem] hover:bg-discord-primary;
+  }
 }

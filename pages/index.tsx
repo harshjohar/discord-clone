@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import { useSelector } from 'react-redux'
+import { ActivityBar } from '../components/ActivityBar'
 import { Channels } from '../components/Channels'
 import { Chat } from '../components/Chat'
 import { FriendsBar } from '../components/FriendsBar'
@@ -12,7 +13,7 @@ import { selectServerId } from '../features/serverSlice'
 
 export default function Home() {
   const serverId = useSelector(selectServerId)
-  const channelId = useSelector(selectChannelId);
+  const channelId = useSelector(selectChannelId)
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-discord-primary">
       {/* SEO */}
@@ -97,11 +98,19 @@ export default function Home() {
         <meta name="theme-color" content="#ffffff"></meta>
       </Head>
 
-      <main className="flex w-[100%]">
+      <main className="flex w-[100%] h-screen overflow-hidden">
         <Servers />
-        {serverId ? <Channels /> : <FriendsBar/>}
-        {serverId ? (channelId ? <Chat /> : <LandingServer/>) : <LandingProfile/>}
-        {serverId && <Members/>}
+        {serverId ? <Channels /> : <FriendsBar />}
+        {serverId ? (
+          channelId ? (
+            <Chat />
+          ) : (
+            <LandingServer />
+          )
+        ) : (
+          <LandingProfile />
+        )}
+        {serverId ? <Members /> : <ActivityBar />}
       </main>
     </div>
   )

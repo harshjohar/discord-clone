@@ -5,10 +5,11 @@ import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded'
 import { PlusIcon } from '@heroicons/react/solid'
 import { useSelector } from 'react-redux'
 import { selectServerId } from '../features/serverSlice'
-import { addDoc, collection, doc } from 'firebase/firestore'
+import { addDoc, collection, doc, orderBy, query } from 'firebase/firestore'
 import { auth, db } from '../server/firebase'
 import { useCollection, useDocument } from 'react-firebase-hooks/firestore'
 import { useAuthState } from 'react-firebase-hooks/auth'
+import { UserInfoBar } from './UserInfoBar'
 
 export const Channels = () => {
   const serverId = useSelector(selectServerId)
@@ -17,7 +18,11 @@ export const Channels = () => {
   const serverName = serverDoc?.data()?.name
 
   const [channels] = useCollection(
-    serverDoc && collection(doc(db, 'servers', serverDoc.id), 'channels')
+    serverDoc &&
+      query(
+        collection(doc(db, 'servers', serverDoc.id), 'channels'),
+        orderBy('name', 'asc')
+      )
   )
 
   const addChannel = () => {
@@ -29,7 +34,7 @@ export const Channels = () => {
     }
   }
   return (
-    <div className="w-60 overflow-y-scroll bg-discord-topLeft scrollbar-hide">
+    <div className="relative w-60 overflow-hidden h-full bg-discord-topLeft">
       <div className="flex h-12 cursor-pointer items-center justify-between border border-discord-primary shadow-lg hover:bg-discord-primary">
         <p className="p-2 font-bold text-white">{serverName}</p>
         <KeyboardArrowDownIcon className="mx-4 w-5 text-white" />
@@ -44,11 +49,12 @@ export const Channels = () => {
           />
         )}
       </div>
-      <div className="px-2">
+      <div className="h-[75%] overflow-y-scroll px-2 scrollbar-hide">
         {channels?.docs?.map((doc) => (
           <Channel channel={doc} key={doc.id} />
         ))}
       </div>
+      <UserInfoBar />
     </div>
   )
 }
