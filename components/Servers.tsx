@@ -6,8 +6,8 @@ import { addDoc, collection, doc, query, where } from 'firebase/firestore'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollection } from 'react-firebase-hooks/firestore'
 import { ServerIcon } from './ServerIcon'
-import { useDispatch } from 'react-redux'
-import { exitServer } from '../features/serverSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { exitServer, selectServerId } from '../features/serverSlice'
 import ExploreIcon from '@mui/icons-material/Explore';
 import { useRouter } from 'next/router'
 
@@ -49,6 +49,7 @@ export const Servers = () => {
   )
 
   const dispatch = useDispatch()
+  const currServer = useSelector(selectServerId);
 
   const removeDispatch = () => {
     dispatch(exitServer())
@@ -57,12 +58,11 @@ export const Servers = () => {
   // try to make a hamburger type thing on mobile
   return (
     <div className="h-screen w-20 overflow-y-scroll bg-discord-sidebarleft scrollbar-hide">
-      {/* top discord logo */}
-      <div className="flex items-center justify-center p-2">
+      <div className={`flex items-center justify-center p-1 md:p-3 bg-discord-primary m-2 rounded-full hover:rounded-[1rem] cursor-pointer hover:bg-discord-blurple transition-all  ${!currServer && "rounded-[1rem] bg-discord-blurple"}`}>
         <img
-          src="/dp.png"
+          src="/logos/Discord-Logo-White.svg"
           alt="DC"
-          className="serverIcon"
+          className="h-8 w-8"
           onClick={removeDispatch}
         />
       </div>
@@ -73,7 +73,7 @@ export const Servers = () => {
           <ServerIcon doc={doc} key={doc.id} />
         ))}
       </div>
-      {/* add server */}
+      
       <div className="flex items-center justify-center p-2" onClick={addServer}>
         <div className="serverIcon flex items-center justify-center bg-discord-primary text-[25px] text-discord-green hover:bg-discord-green hover:text-discord-primary">
           <PlusIcon className="w-5" />

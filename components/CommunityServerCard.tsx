@@ -1,7 +1,6 @@
 import { Avatar } from '@mui/material'
 import {
   arrayUnion,
-  collection,
   doc,
   DocumentData,
   QueryDocumentSnapshot,

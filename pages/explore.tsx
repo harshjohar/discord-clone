@@ -9,7 +9,6 @@ import { Servers } from '../components/Servers'
 import { auth, db } from '../server/firebase'
 
 const Explore = () => {
-  const [user] = useAuthState(auth)
   const [servers] = useCollection(
     query(collection(db, 'servers'), where('community', '==', true))
   )

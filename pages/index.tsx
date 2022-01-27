@@ -15,7 +15,7 @@ export default function Home() {
   const serverId = useSelector(selectServerId)
   const channelId = useSelector(selectChannelId)
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-discord-primary">
+    <div className="flex h-screen w-screen overflow-hidden bg-discord-primary ml-auto mr-auto">
       {/* SEO */}
       <Head>
         <title>Discord</title>
@@ -98,7 +98,7 @@ export default function Home() {
         <meta name="theme-color" content="#ffffff"></meta>
       </Head>
 
-      <main className="flex w-[100%] h-screen overflow-hidden">
+      <main className="flex w-[100%] h-screen overflow-hidden ml-auto mr-auto">
         <Servers />
         {serverId ? <Channels /> : <FriendsBar />}
         {serverId ? (
