@@ -26,6 +26,7 @@ export const Servers = () => {
         photo: null,
         owner: user?.uid,
         users: [user?.uid],
+        community: true
       }).then((server) => {
         addDoc(collection(doc(db, 'servers', server.id), 'channels'), {
           name: 'general',
