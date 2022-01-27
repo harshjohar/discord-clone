@@ -10,6 +10,7 @@ import { auth, db } from '../server/firebase'
 import { useCollection, useDocument } from 'react-firebase-hooks/firestore'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { UserInfoBar } from './UserInfoBar'
+import { useRouter } from 'next/router'
 
 export const Channels = () => {
   const serverId = useSelector(selectServerId)
@@ -33,9 +34,14 @@ export const Channels = () => {
       })
     }
   }
+  const router = useRouter()
+  const serverSettings = () => {
+    router.push('/server')
+  }
+
   return (
-    <div className="relative w-60 overflow-hidden h-full bg-discord-topLeft">
-      <div className="flex h-12 cursor-pointer items-center justify-between border border-discord-primary shadow-lg hover:bg-discord-primary">
+    <div className="relative h-full w-60 overflow-hidden bg-discord-topLeft">
+      <div onClick={serverSettings} className="flex h-12 cursor-pointer items-center justify-between border border-discord-primary shadow-lg hover:bg-discord-primary">
         <p className="p-2 font-bold text-white">{serverName}</p>
         <KeyboardArrowDownIcon className="mx-4 w-5 text-white" />
       </div>

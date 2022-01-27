@@ -16,7 +16,7 @@ export const UserInfoBar = () => {
 
   return (
     <div className="absolute bottom-0 flex w-full border border-discord-selectedOption bg-discord-sidebarleft">
-      <div className="w-[20%] cursor-pointer p-2 hover:opacity-90">
+      <div className="w-[20%] cursor-pointer p-2 hover:opacity-90 hidden md:flex">
         {user?.photoURL ? (
           <img
             src={user?.photoURL}
@@ -27,13 +27,13 @@ export const UserInfoBar = () => {
           <Avatar />
         )}
       </div>
-      <div className="flex w-[40%] flex-col justify-center text-discord-white">
+      <div className="flex md:w-[40%] w-[50%] flex-col justify-center text-discord-white">
         <p className="cursor-pointer truncate text-sm font-bold">
           {user?.displayName}
         </p>
         <p className="cursor-default truncate text-xs">{user?.email}</p>
       </div>
-      <div className="flex w-[35%] items-center space-x-1 text-gray-400">
+      <div className="flex md:w-[35%] w-[50%] items-center space-x-1 text-gray-400">
         <MicrophoneIcon className="icon h-5" />
         <Headphones className="icon" />
         <Settings className="icon" onClick={handleSetting}/>
