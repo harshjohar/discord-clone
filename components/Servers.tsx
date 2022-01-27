@@ -1,4 +1,3 @@
-import { signOut } from 'firebase/auth'
 import React from 'react'
 import { auth, db } from '../server/firebase'
 import { PlusIcon } from '@heroicons/react/solid'
@@ -12,9 +11,6 @@ import ExploreIcon from '@mui/icons-material/Explore';
 import { useRouter } from 'next/router'
 
 export const Servers = () => {
-  const logout = () => {
-    signOut(auth)
-  }
 
   const [user] = useAuthState(auth)
 
@@ -84,11 +80,6 @@ export const Servers = () => {
           <ExploreIcon/>
         </div>
       </div>
-
-      {/* temporary logout button */}
-      <button className="text-white" onClick={logout}>
-        Logout
-      </button>
     </div>
   )
 }
