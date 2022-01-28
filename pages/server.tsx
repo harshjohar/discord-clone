@@ -58,7 +58,7 @@ const Server = () => {
   const [serverInfo] = useDocument(doc(db, 'servers', serverId))
   const [checked, setChecked] = useState(serverInfo?.data()?.community)
 
-  const setCommunity = (check:boolean) => {
+  const setCommunity = (check: boolean) => {
     if (check) {
       serverId &&
         setDoc(
@@ -117,15 +117,17 @@ const Server = () => {
         </form>
       </div>
       <div className="relative mt-2 flex h-screen w-[50%] flex-col p-6 py-16 md:w-[70%] md:p-16">
-        <h1 className="hidden text-3xl text-white md:inline">Server Info</h1>
+        <h1 className="hidden text-3xl text-white md:inline">
+          Server Info{' '}
+          <span>
+            {serverInfo?.data()?.community ? '(community)' : '(private)'}
+          </span>
+        </h1>
         <div className="flex flex-col rounded-xl bg-discord-sidebarleft p-2 text-gray-400 md:p-3">
           <div className="flex w-full justify-between">
             <div>
               <h2 className="text-2xl text-white">
                 {serverInfo?.data()?.name}{' '}
-                <span>
-                  {serverInfo?.data()?.community ? '(community)' : ''}
-                </span>
               </h2>
               <p>Members: {serverInfo?.data()?.users?.length}</p>
             </div>
