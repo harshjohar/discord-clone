@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { exitServer, selectServerId } from '../features/serverSlice'
 import { useDocument } from 'react-firebase-hooks/firestore'
 import { Delete } from '@mui/icons-material'
+import { Avatar } from '@mui/material'
 
 const Server = () => {
   useEffect(() => {
@@ -104,24 +105,37 @@ const Server = () => {
             type="email"
             value={emailId}
             onChange={(e) => setEmailId(e.target.value)}
-            className="md:w-full bg-discord-primary p-3 w-[90%]"
+            className="w-[90%] bg-discord-primary p-3 md:w-full"
           />
           <button type="submit" onClick={inviteToServer} className="hidden">
             Invite!
           </button>
         </form>
       </div>
-      <div className="relative flex h-screen w-[50%] flex-col md:p-16 p-6 py-16 md:w-[70%] mt-2">
-        <h1 className="text-3xl text-white hidden md:inline">Server Info</h1>
-        <div className="flex h-[30%] flex-col rounded-xl bg-discord-sidebarleft md:p-3 text-gray-400 p-2">
-          <h2 className="text-2xl text-white">{serverInfo?.data()?.name}</h2>
-          <p>Members: {serverInfo?.data()?.users?.length}</p>
-          <p className="mt-5 text-discord-yellow hidden md:inline">
+      <div className="relative mt-2 flex h-screen w-[50%] flex-col p-6 py-16 md:w-[70%] md:p-16">
+        <h1 className="hidden text-3xl text-white md:inline">Server Info</h1>
+        <div className="flex flex-col rounded-xl bg-discord-sidebarleft p-2 text-gray-400 md:p-3">
+          <div className='w-full flex justify-between'>
+            <div>
+              <h2 className="text-2xl text-white">
+                {serverInfo?.data()?.name}
+              </h2>
+              <p>Members: {serverInfo?.data()?.users?.length}</p>
+            </div>
+            <div className='cursor-pointer hover:opacity-90'>
+              {serverInfo?.data()?.photo ? (
+                <img src={serverInfo?.data()?.photo} alt="" />
+              ) : (
+                <Avatar>{serverInfo?.data()?.name?.[0]}</Avatar>
+              )}
+            </div>
+          </div>
+          <p className="mt-5 hidden text-discord-yellow md:inline">
             {!checked
               ? 'Want to make your private server a community?'
               : 'Want this this server to be private again?'}
           </p>
-          <div className="flex md:space-x-4 md:flex-row flex-col">
+          {serverInfo?.data()?.owner===user?.uid ? <div className="flex flex-col md:flex-row md:space-x-4">
             <button
               onClick={() => setChecked(false)}
               className={`mt-2 rounded-lg bg-discord-primary p-2  ${
@@ -138,12 +152,12 @@ const Server = () => {
             >
               Community
             </button>
-          </div>
+          </div> : <p>CONTACT SERVER OWNER THEN!</p>}
         </div>
-        {serverInfo?.data()?.owner && (
+        {serverInfo?.data()?.owner===user?.uid && (
           <button
             onClick={deleteServer}
-            className="mt-4 text-white flex w-fit items-center rounded-md bg-discord-red p-3 hover:opacity-80"
+            className="mt-4 flex w-fit items-center rounded-md bg-discord-red p-3 text-white hover:opacity-80"
           >
             <Delete /> Delete Server
           </button>

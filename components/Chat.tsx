@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   HashtagIcon,
   BellIcon,
@@ -23,9 +23,7 @@ export const Chat = () => {
   const serverId = useSelector(selectServerId)
   const [user] = useAuthState(auth)
   const channelRef = doc(doc(db, 'servers', serverId), 'channels', channelId)
-  const [channelDoc] = useDocument(
-    channelId && channelRef
-  )
+  const [channelDoc] = useDocument(channelId && channelRef)
 
   const channelData = channelDoc?.data()
   const messageRef = useRef<HTMLInputElement>(null)
@@ -34,13 +32,14 @@ export const Chat = () => {
 
   const sendMessage = (e: any) => {
     e.preventDefault()
-
-    addDoc(collection(channelRef, 'messages'), {
-      message: message,
-      timestamp: serverTimestamp(),
-      displayName: user?.displayName,
-      photoUrl: user?.photoURL,
-    })
+    if (message.length > 0) {
+      addDoc(collection(channelRef, 'messages'), {
+        message: message,
+        timestamp: serverTimestamp(),
+        displayName: user?.displayName,
+        photoUrl: user?.photoURL,
+      })
+    }
 
     messageRef?.current?.scrollIntoView({
       behavior: 'smooth',

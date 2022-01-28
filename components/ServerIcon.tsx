@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { useCollection, useDocument } from 'react-firebase-hooks/firestore'
 import { useDispatch, useSelector } from 'react-redux'
-import { enterChannel } from '../features/channelSlice'
+import { enterChannel, exitChannel } from '../features/channelSlice'
 import { enterServer, selectServerId } from '../features/serverSlice'
 import { db } from '../server/firebase'
 
@@ -22,8 +22,8 @@ export const ServerIcon = (props: serverProp) => {
         router.push('/')
       }
       dispatch(enterServer(props.doc.id))
+      dispatch(exitChannel())
     }
-
   }
   return (
     <div onClick={selectServer}>

@@ -3,3 +3,4 @@ redux
 firebase
 tailwindcss
 google authentication
+typescript

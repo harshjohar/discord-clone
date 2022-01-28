@@ -15,11 +15,14 @@ interface ChannelState {
     reducers: {
       enterChannel: (state, actions:PayloadAction<string>) => {
         state.channelId = actions.payload
+      }, 
+      exitChannel: (state)=> {
+        state.channelId=null
       }
     },
   })
   
-  export const { enterChannel } = channelSlice.actions
+  export const { enterChannel, exitChannel } = channelSlice.actions
   
   export const selectChannelId = (state: RootState) => state.channel.channelId
   
