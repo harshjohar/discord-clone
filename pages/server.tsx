@@ -58,8 +58,8 @@ const Server = () => {
   const [serverInfo] = useDocument(doc(db, 'servers', serverId))
   const [checked, setChecked] = useState(serverInfo?.data()?.community)
 
-  useEffect(() => {
-    if (checked) {
+  const setCommunity = (check:boolean) => {
+    if (check) {
       serverId &&
         setDoc(
           doc(db, 'servers', serverId),
@@ -67,7 +67,9 @@ const Server = () => {
             community: true,
           },
           { merge: true }
-        )
+        ).then(() => {
+          setChecked(true)
+        })
     } else {
       serverId &&
         setDoc(
@@ -76,9 +78,11 @@ const Server = () => {
             community: false,
           },
           { merge: true }
-        )
+        ).then(() => {
+          setChecked(false)
+        })
     }
-  }, [checked])
+  }
 
   const deleteServer = () => {
     const sure = confirm('Are you sure?')
@@ -90,7 +94,7 @@ const Server = () => {
       })
     }
   }
-
+  console.log(serverInfo?.data()?.community)
   return (
     <div className="relative flex h-screen w-screen overflow-hidden bg-discord-primary">
       <Head>
@@ -115,14 +119,17 @@ const Server = () => {
       <div className="relative mt-2 flex h-screen w-[50%] flex-col p-6 py-16 md:w-[70%] md:p-16">
         <h1 className="hidden text-3xl text-white md:inline">Server Info</h1>
         <div className="flex flex-col rounded-xl bg-discord-sidebarleft p-2 text-gray-400 md:p-3">
-          <div className='w-full flex justify-between'>
+          <div className="flex w-full justify-between">
             <div>
               <h2 className="text-2xl text-white">
-                {serverInfo?.data()?.name}
+                {serverInfo?.data()?.name}{' '}
+                <span>
+                  {serverInfo?.data()?.community ? '(community)' : ''}
+                </span>
               </h2>
               <p>Members: {serverInfo?.data()?.users?.length}</p>
             </div>
-            <div className='cursor-pointer hover:opacity-90'>
+            <div className="cursor-pointer hover:opacity-90">
               {serverInfo?.data()?.photo ? (
                 <img src={serverInfo?.data()?.photo} alt="" />
               ) : (
@@ -135,26 +142,26 @@ const Server = () => {
               ? 'Want to make your private server a community?'
               : 'Want this this server to be private again?'}
           </p>
-          {serverInfo?.data()?.owner===user?.uid ? <div className="flex flex-col md:flex-row md:space-x-4">
-            <button
-              onClick={() => setChecked(false)}
-              className={`mt-2 rounded-lg bg-discord-primary p-2  ${
-                !checked && 'text-discord-green'
-              }`}
-            >
-              Private
-            </button>
-            <button
-              onClick={() => setChecked(true)}
-              className={`mt-2 rounded-lg bg-discord-primary p-2  ${
-                checked && 'text-discord-red'
-              }`}
-            >
-              Community
-            </button>
-          </div> : <p>CONTACT SERVER OWNER THEN!</p>}
+          {serverInfo?.data()?.owner === user?.uid ? (
+            <div className="flex flex-col md:flex-row md:space-x-4">
+              <button
+                onClick={() => setCommunity(false)}
+                className={`mt-2 rounded-lg bg-discord-primary p-2  ${'text-discord-green'}`}
+              >
+                Private
+              </button>
+              <button
+                onClick={() => setCommunity(true)}
+                className={`mt-2 rounded-lg bg-discord-primary p-2  ${'text-discord-red'}`}
+              >
+                Community
+              </button>
+            </div>
+          ) : (
+            <p>CONTACT SERVER OWNER THEN!</p>
+          )}
         </div>
-        {serverInfo?.data()?.owner===user?.uid && (
+        {serverInfo?.data()?.owner === user?.uid && (
           <button
             onClick={deleteServer}
             className="mt-4 flex w-fit items-center rounded-md bg-discord-red p-3 text-white hover:opacity-80"
