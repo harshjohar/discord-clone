@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import { useSelector } from 'react-redux'
+import { wrapper } from '../app/store'
 import { ActivityBar } from '../components/ActivityBar'
 import { Channels } from '../components/Channels'
 import { Chat } from '../components/Chat'
@@ -11,9 +12,10 @@ import { Servers } from '../components/Servers'
 import { selectChannelId } from '../features/channelSlice'
 import { selectServerId } from '../features/serverSlice'
 
-export default function Home() {
+export default function Home(props:any) {
   const serverId = useSelector(selectServerId)
   const channelId = useSelector(selectChannelId)
+  console.log(props.state);
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-discord-primary ml-auto mr-auto">
       {/* SEO */}
@@ -115,3 +117,12 @@ export default function Home() {
     </div>
   )
 }
+
+export const getServerSideProps = wrapper.getServerSideProps(store=>({req, res, ...etc})=> {
+  const states = store.getState();
+  return {
+    props: {
+      state: states
+    }
+  }
+})
