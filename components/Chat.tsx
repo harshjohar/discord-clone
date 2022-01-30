@@ -8,15 +8,22 @@ import {
   EmojiHappyIcon,
 } from '@heroicons/react/solid'
 import PushPinIcon from '@mui/icons-material/PushPin'
-import { StickyNote2Rounded, Gif } from '@mui/icons-material'
+import { StickyNote2Rounded, Gif, Close } from '@mui/icons-material'
 import { Messages } from './Messages'
 import { useSelector } from 'react-redux'
 import { selectChannelId } from '../features/channelSlice'
 import { useDocument } from 'react-firebase-hooks/firestore'
-import { addDoc, collection, doc, serverTimestamp } from 'firebase/firestore'
-import { auth, db } from '../server/firebase'
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  setDoc,
+} from 'firebase/firestore'
+import { auth, db, storage } from '../server/firebase'
 import { selectServerId } from '../features/serverSlice'
 import { useAuthState } from 'react-firebase-hooks/auth'
+import { getDownloadURL, ref, uploadString } from 'firebase/storage'
 
 export const Chat = () => {
   const channelId = useSelector(selectChannelId)
@@ -30,22 +37,58 @@ export const Chat = () => {
 
   const [message, setMessage] = useState('')
 
-  const sendMessage = (e: any) => {
+  const sendMessage = async (e: any) => {
     e.preventDefault()
     if (message.length > 0) {
-      addDoc(collection(channelRef, 'messages'), {
-        message: message,
+      const msg = message
+      setMessage('')
+      const docAdded = await addDoc(collection(channelRef, 'messages'), {
+        message: msg,
         timestamp: serverTimestamp(),
         displayName: user?.displayName,
         photoUrl: user?.photoURL,
       })
+
+      if (imageToPost) {
+        const storageRef = ref(storage, `messages/${docAdded.id}`)
+        await uploadString(storageRef, imageToPost, 'data_url')
+
+        const url = await getDownloadURL(
+          ref(storage, `messages/${docAdded.id}`)
+        )
+
+        setDoc(
+          docAdded,
+          {
+            postImage: url,
+          },
+          { merge: true }
+        )
+      }
     }
 
     messageRef?.current?.scrollIntoView({
       behavior: 'smooth',
     })
+    removeImage()
+  }
 
-    setMessage('')
+  // add image functionality
+  const fileRef = useRef<HTMLInputElement>(null)
+  const [imageToPost, setImageToPost] = useState<any>(null)
+  const addImageToFile = (e: any) => {
+    const reader = new FileReader()
+    if (e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0])
+    }
+
+    reader.onload = (readerEvent) => {
+      setImageToPost(readerEvent.target?.result)
+    }
+  }
+
+  const removeImage = () => {
+    setImageToPost(null)
   }
 
   return (
@@ -74,7 +117,22 @@ export const Chat = () => {
       <Messages channelDoc={channelRef} />
 
       <div className="absolute bottom-6 left-4 flex w-[90%] rounded-lg bg-gray-500 px-2 py-1">
-        <PlusCircleIcon className="w-8 cursor-pointer text-gray-400 hover:text-white" />
+        {/* input image */}
+        <PlusCircleIcon
+          className="w-8 cursor-pointer text-gray-400 hover:text-white"
+          onClick={() =>
+            fileRef ? fileRef.current?.click() : console.log('first')
+          }
+        />
+        <input type="file" hidden onChange={addImageToFile} ref={fileRef} />
+
+        {imageToPost && (
+          <div className="">
+            <img src={imageToPost} alt="" className="h-10 object-contain" />
+            <Close onClick={removeImage} className="cursor-pointer" />
+          </div>
+        )}
+        
         <form className="w-full">
           <input
             type="text"

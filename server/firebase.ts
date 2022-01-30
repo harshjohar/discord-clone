@@ -1,6 +1,8 @@
 import { initializeApp } from 'firebase/app'
 import { getAuth, GoogleAuthProvider } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
+import {getStorage} from 'firebase/storage'
+
 const firebaseConfig = {
   apiKey: 'AIzaSyDKYynSuCy_bzRBL6ARe8YHAH1NbGyg43g',
   authDomain: 'discord-harsh.firebaseapp.com',
@@ -14,5 +16,6 @@ const app = initializeApp(firebaseConfig)
 const auth = getAuth()
 const db = getFirestore()
 const provider = new GoogleAuthProvider()
+const storage = getStorage()
 
-export { auth, db, provider }
+export { auth, db, provider, storage }
