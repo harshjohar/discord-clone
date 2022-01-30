@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { HYDRATE } from 'next-redux-wrapper'
 import type { RootState } from '../app/store'
 
 interface ChannelState {
@@ -20,6 +21,14 @@ interface ChannelState {
         state.channelId=null
       }
     },
+    extraReducers: {
+      [HYDRATE]: (state, action) => {
+        return {
+          ...state,
+          ...action.payload
+        }
+      }
+    }
   })
   
   export const { enterChannel, exitChannel } = channelSlice.actions

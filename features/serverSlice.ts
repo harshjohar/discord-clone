@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../app/store'
+import { HYDRATE } from "next-redux-wrapper";
 
 interface ServerState {
   serverId: any
@@ -20,6 +21,14 @@ export const serverSlice = createSlice({
       state.serverId = null
     }
   },
+  extraReducers: {
+    [HYDRATE]: (state, action) => {
+      return {
+        ...state,
+        ...action.payload
+      }
+    }
+  }
 })
 
 export const { enterServer, exitServer } = serverSlice.actions

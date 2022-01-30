@@ -4,12 +4,11 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import { auth, db } from '../server/firebase'
 import { Login } from '../components/Login'
 import { Loading } from '../components/Loading'
-import { useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore'
-import { Provider } from 'react-redux'
-import { store } from '../app/store'
+import { wrapper } from '../app/store'
 
-function MyApp({ Component, pageProps }: AppProps) {
+const WrappedApp: FC<AppProps> = ({Component, pageProps}) => {
   const [user, loading] = useAuthState(auth)
 
   useEffect(() => {
@@ -37,10 +36,8 @@ function MyApp({ Component, pageProps }: AppProps) {
     return <Login />
   }
   return (
-    <Provider store={store}>
       <Component {...pageProps} />
-    </Provider>
   )
 }
 
-export default MyApp
+export default wrapper.withRedux(WrappedApp);
