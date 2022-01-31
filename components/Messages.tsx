@@ -25,7 +25,7 @@ export const Messages = (props: channelProp) => {
   return (
     <div className="h-[80%] overflow-y-scroll scrollbar-hide">
       {messages?.docs?.map((doc) => {
-        const { message, timestamp, displayName, photoUrl } = doc.data()
+        const { message, timestamp, displayName, photoUrl, postImage } = doc.data()
         return (
           <Message
             key={doc.id}
@@ -33,6 +33,7 @@ export const Messages = (props: channelProp) => {
             timestamp={timestamp}
             displayName={displayName}
             photoUrl={photoUrl}
+            postImage={postImage}
           />
         )
       })}

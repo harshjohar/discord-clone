@@ -42,6 +42,8 @@ export const Chat = () => {
     if (message.length > 0) {
       const msg = message
       setMessage('')
+      const img = imageToPost
+      removeImage()
       const docAdded = await addDoc(collection(channelRef, 'messages'), {
         message: msg,
         timestamp: serverTimestamp(),
@@ -51,7 +53,7 @@ export const Chat = () => {
 
       if (imageToPost) {
         const storageRef = ref(storage, `messages/${docAdded.id}`)
-        await uploadString(storageRef, imageToPost, 'data_url')
+        await uploadString(storageRef, img, 'data_url')
 
         const url = await getDownloadURL(
           ref(storage, `messages/${docAdded.id}`)
@@ -63,14 +65,17 @@ export const Chat = () => {
             postImage: url,
           },
           { merge: true }
-        )
+        ).then(() => {
+          messageRef?.current?.scrollIntoView({
+            behavior: 'smooth',
+          })
+        })
       }
     }
 
     messageRef?.current?.scrollIntoView({
       behavior: 'smooth',
     })
-    removeImage()
   }
 
   // add image functionality
@@ -116,45 +121,46 @@ export const Chat = () => {
 
       <Messages channelDoc={channelRef} />
 
-      <div className="absolute bottom-6 left-4 flex w-[90%] rounded-lg bg-gray-500 px-2 py-1">
+      <div className="absolute bottom-6 left-4 flex flex-col w-[90%] rounded-lg bg-gray-500 px-2 py-1">
         {/* input image */}
-        <PlusCircleIcon
-          className="w-8 cursor-pointer text-gray-400 hover:text-white"
-          onClick={() =>
-            fileRef ? fileRef.current?.click() : console.log('first')
-          }
-        />
-        <input type="file" hidden onChange={addImageToFile} ref={fileRef} />
-
         {imageToPost && (
-          <div className="">
-            <img src={imageToPost} alt="" className="h-10 object-contain" />
-            <Close onClick={removeImage} className="cursor-pointer" />
+          <div className="flex items-center space-x-4">
+            <Close onClick={removeImage} className="cursor-pointer text-white" />
+            <img src={imageToPost} alt="" className="w-72 object-contain" />
           </div>
         )}
-        
-        <form className="w-full">
-          <input
-            type="text"
-            className="ml-3 h-8 w-[75%] rounded-lg border-none bg-transparent text-white caret-white outline-none"
-            placeholder={`Message #${channelData?.name}`}
-            ref={messageRef}
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
+        <div className='flex'>
+          <PlusCircleIcon
+            className="w-8 cursor-pointer text-gray-400 hover:text-white"
+            onClick={() =>
+              fileRef ? fileRef.current?.click() : console.log('first')
+            }
           />
-          <button onClick={sendMessage} type="submit" className="hidden">
-            Send
-          </button>
-        </form>
+          <input type="file" hidden onChange={addImageToFile} ref={fileRef} />
 
-        <div className="hidden items-center space-x-2 sm:flex">
-          <GiftIcon className="w-6 cursor-pointer text-gray-400 hover:text-white" />
-          <Gif
-            className="cursor-pointer text-gray-400 hover:text-white"
-            fontSize="large"
-          />
-          <StickyNote2Rounded className="rotate-180 cursor-pointer text-gray-400 hover:text-white" />
-          <EmojiHappyIcon className="w-6 cursor-pointer text-gray-400 hover:text-white" />
+          <form className="w-full">
+            <input
+              type="text"
+              className="ml-3 h-8 w-[75%] rounded-lg border-none bg-transparent text-white caret-white outline-none"
+              placeholder={`Message #${channelData?.name}`}
+              ref={messageRef}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+            <button onClick={sendMessage} type="submit" className="hidden">
+              Send
+            </button>
+          </form>
+
+          <div className="hidden items-center space-x-2 sm:flex">
+            <GiftIcon className="w-6 cursor-pointer text-gray-400 hover:text-white" />
+            <Gif
+              className="cursor-pointer text-gray-400 hover:text-white"
+              fontSize="large"
+            />
+            <StickyNote2Rounded className="rotate-180 cursor-pointer text-gray-400 hover:text-white" />
+            <EmojiHappyIcon className="w-6 cursor-pointer text-gray-400 hover:text-white" />
+          </div>
         </div>
       </div>
     </div>
